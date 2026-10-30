@@ -1,21 +1,81 @@
-# Panal Roto
+<div align="center">
 
-Puzle de piezas que caen sobre un tablero hexagonal. Las líneas se cierran en tres direcciones y, tras cada limpieza, lo que queda se derrumba: si al caer se completa otra línea, se limpia sola y encadena.
+<img src="capturas/banner.png" alt="Panal Roto" width="100%">
 
-Un único `index.html`, sin dependencias, con HTML5 + Canvas y sonido sintetizado con Web Audio. Hecho por [Ivanchux](https://github.com/Ivanchux).
+# 🍯 Panal Roto
 
-**Jugar:** https://ivanchux.github.io/panal-roto/ (una vez activado GitHub Pages en el repositorio; si el repositorio tiene otro nombre, la dirección cambia con él).
-También funciona abriendo `index.html` directamente en el navegador.
+**Puzle de piezas que caen sobre un tablero hexagonal.**
+Las líneas se cierran en tres direcciones y, tras cada limpieza, lo que queda se derrumba: si al caer se completa otra línea, se limpia sola y encadena.
 
-![Una cadena de cuatro derrumbes](capturas/cadena.gif)
+[![Jugar](https://img.shields.io/badge/▶_JUGAR_AHORA-ffb627?style=for-the-badge&labelColor=120d1b)](https://ivanchux.github.io/panal-roto/)
+![HTML5](https://img.shields.io/badge/HTML5-Canvas-e34f26?style=flat-square&logo=html5&logoColor=white)
+![JavaScript](https://img.shields.io/badge/JavaScript-vanilla-f7df1e?style=flat-square&logo=javascript&logoColor=black)
+![Dependencias](https://img.shields.io/badge/dependencias-0-success?style=flat-square)
+![Móvil](https://img.shields.io/badge/PC%2C%20móvil%20y%20mando-sí-000080?style=flat-square)
+![Licencia](https://img.shields.io/badge/licencia-PolyForm%20NC-808080?style=flat-square)
+
+</div>
+
+---
+
+## 📑 Índice
+
+[Qué es](#-qué-es) · [Capturas](#-capturas) · [En movimiento](#-en-movimiento) · [Reglas](#-reglas) · [Controles](#️-controles) · [Accesibilidad](#-accesibilidad) · [Qué lo hace distinto](#-qué-lo-hace-distinto) · [Cómo se ha probado](#-cómo-se-ha-probado) · [Límites conocidos](#️-límites-conocidos) · [Ejecutar y publicar](#-ejecutar-y-publicar) · [Detalles técnicos](#-detalles-técnicos) · [Estructura](#-estructura-del-repositorio) · [Licencia](#-licencia)
+
+## 🍯 Qué es
+
+Panal Roto es un puzle de navegador sobre un panal de 9 columnas por 16 filas. Las piezas son las 10 formas que se pueden hacer con cuatro hexágonos y las líneas se cierran en tres direcciones. Tras cada limpieza, lo que queda se derrumba como cuerpos rígidos, y eso es lo que hace posibles las cadenas.
+
+- **Un único `index.html`**, sin dependencias, con HTML5 + Canvas y sonido sintetizado con Web Audio.
+- Funciona con **teclado, mando y pantalla táctil**.
+- Tres modos: **Maratón**, **Contrarreloj** y **Partida diaria**.
+- **Modo para daltónicos**, reducción de movimiento y ajustes de DAS, ARR y volumen.
+
+## 📸 Capturas
+
+<div align="center">
+
+| Menú | Partida |
+|:---:|:---:|
+| <img src="capturas/escritorio-menu.png" width="420"> | <img src="capturas/escritorio-partida.png" width="420"> |
+
+| Cómo se juega | Ajustes |
+|:---:|:---:|
+| <img src="capturas/como-se-juega.png" width="420"> | <img src="capturas/ajustes.png" width="420"> |
+
+| Una limpieza | Modo para daltónicos |
+|:---:|:---:|
+| <img src="capturas/escritorio-limpieza-1.png" width="420"> | <img src="capturas/daltonico.png" width="420"> |
+
+<img src="capturas/movil-partida.png" height="440"> &nbsp; <img src="capturas/movil-limpieza-1.png" height="440">
+
+*En el móvil se juega con botones en pantalla y gestos.*
+
+</div>
+
+## 🎬 En movimiento
+
+<div align="center">
+
+**Una cadena de cuatro derrumbes**
+
+<img src="capturas/cadena.gif" width="420">
 
 *Partida con la semilla 33: la pieza número 56 provoca una cadena de cuatro eslabones.*
 
-| Menú | Partida | Móvil |
-|---|---|---|
-| ![Menú](capturas/escritorio-menu.png) | ![Partida](capturas/escritorio-partida.png) | ![Móvil](capturas/movil-partida.png) |
+### 📱 En el móvil
 
-## Reglas
+<img src="capturas/gifs/movil-partida.gif" width="240">
+
+### 🖥️ En el PC
+
+<img src="capturas/gifs/pc-partida.gif" width="600">
+
+*Los GIF de PC y móvil son una partida de Maratón con pulsaciones al azar, solo para mostrar el juego.*
+
+</div>
+
+## 📐 Reglas
 
 **Tablero.** Un panal de 9 columnas por 16 filas. Las columnas impares quedan medio hexágono más abajo, y por eso mover una pieza hacia un lado la sube o la baja media celda.
 
@@ -53,7 +113,7 @@ Más de 6 líneas suman 600 cada una. Se multiplica por el cruce, por el eslabó
 - **Contrarreloj:** 3 minutos, gana quien más puntos haga.
 - **Partida diaria:** 80 líneas con las mismas piezas para todos ese día (la semilla sale de la fecha local).
 
-## Controles
+## ⌨️ Controles
 
 | | Acción |
 |---|---|
@@ -63,13 +123,13 @@ Más de 6 líneas suman 600 cada una. Se multiplica por el cruce, por el eslabó
 
 En **Ajustes** se pueden regular el retardo de repetición (DAS), la velocidad de repetición (ARR), la caída suave, los controles táctiles, la pieza fantasma, el nivel inicial y el volumen de música y efectos.
 
-## Accesibilidad
+## ♿ Accesibilidad
 
 - **Modo para daltónicos:** paleta elegida con simulación de protanopia, deuteranopia y tritanopia (diferencia de color mínima entre piezas ΔE ≥ 18,6) y un dibujo grabado distinto en cada pieza, para no depender solo del color.
 - **Reducir movimiento:** sin temblor de pantalla, fragmentos, destellos ni fondo animado. El ritmo de juego no cambia. Se activa solo si el sistema lo pide (`prefers-reduced-motion`).
 - Los eventos importantes se anuncian en una región `aria-live`, y todo el menú se maneja con teclado.
 
-## Qué lo hace distinto
+## 🧩 Qué lo hace distinto
 
 - Tablero hexagonal propio, con líneas en tres direcciones.
 - Conjunto de 10 piezas de cuatro hexágonos, distinto de los clásicos tetrominós.
@@ -79,7 +139,7 @@ En **Ajustes** se pueden regular el retardo de repetición (DAS), la velocidad d
 
 Esto es una decisión de diseño para mantener distancia, no un dictamen legal: nadie que lo haya escrito es abogado.
 
-## Cómo se ha probado
+## 🧪 Cómo se ha probado
 
 Todo lo que se puede comprobar sin una persona delante:
 
@@ -96,21 +156,92 @@ Para repetirlo (Node 18+, Python 3 con Playwright y Chromium):
 sh pruebas/todo.sh
 ```
 
-## Límites conocidos
+## ⚠️ Límites conocidos
 
 - El tacto y la diversión no se han podido juzgar; la curva de velocidad y la dificultad se ajustan jugando. Los bots lo colocan casi todo bien, así que la dificultad real viene de la velocidad.
 - Solo se ha verificado en Chromium. Firefox, Safari y dispositivos reales (móvil, mando físico) están sin probar.
 - El sonido se ha medido, pero no escuchado con altavoces.
 - La partida diaria usa la fecha local: en husos horarios distintos la semilla cambia a horas distintas.
 
-## Estructura
+## 🚀 Ejecutar y publicar
 
-```
-index.html     el juego completo (lo único que hace falta para jugar)
-src/           fuentes: motor, render, audio, app, estilos, plantilla
-build.mjs      genera index.html a partir de src/  (node build.mjs)
-pruebas/       tests, bots y scripts de navegador
-capturas/      imágenes y GIF de este README
+### Jugar en local
+
+No hace falta instalar nada. Abre `index.html` en el navegador.
+
+```bash
+git clone https://github.com/Ivanchux/panal-roto.git
+cd panal-roto
+# abre index.html, o sirve la carpeta si prefieres:
+python3 -m http.server 8000   # http://localhost:8000
 ```
 
-El motor (`src/engine.js`) es puro y determinista, y no toca el DOM: por eso se puede probar desde Node.
+### Publicar en GitHub Pages
+
+1. Sube el repositorio a GitHub.
+2. Ve a **Settings → Pages**.
+3. En *Build and deployment* elige **Deploy from a branch**, rama `main` y carpeta `/ (root)`.
+4. En un minuto estará en `https://ivanchux.github.io/panal-roto/`.
+
+### Regenerar `index.html`
+
+`index.html` se genera a partir de `src/`. Si cambias algo allí:
+
+```bash
+node build.mjs
+```
+
+## 🔧 Detalles técnicos
+
+- **Canvas 2D** con tablero hexagonal propio.
+- **Motor puro y determinista** (`src/engine.js`), que no toca el DOM: por eso se puede probar desde Node y reproducir una partida con la misma semilla.
+- **Derrumbe por cuerpos rígidos:** las celdas que sobreviven a una limpieza siguen unidas a las de su pieza y caen como bloque.
+- **Audio:** música y efectos sintetizados con Web Audio, sin archivos de sonido.
+- **Entrada unificada:** teclado, mando (Gamepad API) y táctil con botones y gestos.
+- **Accesibilidad:** paleta para daltónicos, `prefers-reduced-motion`, región `aria-live` y menús manejables con teclado.
+- **Cero dependencias**, sin imágenes, fuentes ni audio externos.
+
+## 📁 Estructura del repositorio
+
+```text
+panal-roto/
+├── index.html        # El juego completo (generado, es lo único que hace falta para jugar)
+├── src/              # Fuentes: motor, render, audio, app, estilos y plantilla
+├── build.mjs         # Genera index.html a partir de src/  (node build.mjs)
+├── pruebas/          # Tests, bots y scripts de navegador
+├── capturas/         # Banner, capturas y GIFs de este README
+├── CHANGELOG.md      # Historial de versiones
+├── LICENSE           # PolyForm Noncommercial 1.0.0
+└── README.md
+```
+
+## 🗺️ Ideas futuras
+
+- [ ] Probar en Firefox, Safari y dispositivos reales
+- [ ] Ajustar la curva de dificultad jugando
+- [ ] Más modos de juego
+
+## 📜 Licencia
+
+El código está bajo **[PolyForm Noncommercial 1.0.0](LICENSE)**.
+
+**Puedes, sin pedir permiso:**
+- Jugarlo y compartir el enlace.
+- Estudiar el código y modificarlo para uso personal, educativo o sin ánimo de lucro.
+- Subirlo a otra web o a tu propio hosting, siempre gratis y sin anuncios, conservando el aviso de copyright y la licencia.
+- Hacer streams, vídeos y capturas del juego, aunque tu canal esté monetizado.
+
+**Necesitas mi permiso por escrito para:**
+- Vender el juego, una copia o una versión modificada.
+- Publicarlo en tiendas de aplicaciones o plataformas de juegos.
+- Incluirlo en una web con anuncios, suscripciones o compras.
+
+---
+
+<div align="center">
+
+Hecho con 🍯 por **[Ivanchux](https://github.com/Ivanchux)**
+
+⭐ Si te ha gustado, deja una estrella al repositorio.
+
+</div>
