@@ -111,7 +111,7 @@ input[type=checkbox]{width:22px;height:22px;accent-color:var(--honey)}
           <button class="primary modebtn" data-mode="maraton"><span><b>Maratón</b><small>150 líneas, la velocidad sube cada 10</small></span><span class="best" id="best-maraton"></span></button>
           <button class="modebtn" data-mode="contrarreloj"><span><b>Contrarreloj</b><small>Tres minutos, todos los puntos que puedas</small></span><span class="best" id="best-contrarreloj"></span></button>
           <button class="modebtn" data-mode="diaria"><span><b>Partida diaria</b><small id="daily-sub">Mismas piezas para todos hoy · 80 líneas</small></span><span class="best" id="best-diaria"></span></button>
-          <div class="row"><button id="b-how" style="flex:1">Cómo se juega</button><button id="b-set" style="flex:1">Ajustes</button></div>
+          <div class="row"><button id="b-how" style="flex:1">Cómo se juega</button><button id="b-set" style="flex:1">Ajustes</button><button id="b-fs" style="flex:1" hidden>Pantalla completa</button></div>
         </div>
         <p class="foot"><kbd>←</kbd><kbd>→</kbd> mover · <kbd>↑</kbd>/<kbd>X</kbd> girar · <kbd>Z</kbd> girar al revés · <kbd>↓</kbd> bajar · <kbd>Espacio</kbd> caída · <kbd>C</kbd> reserva · <kbd>P</kbd> pausa. También mando y pantalla táctil.<br>Prototipo de Ivanchux.</p>
       </div>
@@ -167,6 +167,8 @@ input[type=checkbox]{width:22px;height:22px;accent-color:var(--honey)}
           <button class="primary" id="p-resume">Continuar</button>
           <button id="p-restart">Reiniciar partida</button>
           <button id="p-set">Ajustes</button>
+          <button id="p-mute">Silenciar (M)</button>
+          <button id="p-fs" hidden>Pantalla completa (F)</button>
           <button id="p-menu">Salir al menú</button>
         </div>
       </div>
@@ -1216,11 +1218,35 @@ const SND = (() => {
     while (das.acc >= S.arr) { das.acc -= S.arr; if (!doMove(das.dir)) { das.acc = 0; break; } }
   }
 
+  /* silencio y pantalla completa (también dentro de un iframe, como en itch.io) */
+  function toggleMute() { SND.setMuted(!SND.isMuted()); syncMuteBtn(); announce(SND.isMuted() ? 'Sonido silenciado' : 'Sonido activado'); }
+  function syncMuteBtn() { const b = $('p-mute'); if (b) b.textContent = SND.isMuted() ? 'Activar sonido (M)' : 'Silenciar (M)'; }
+  const fsRoot = document.documentElement;
+  const fsEl = () => document.fullscreenElement || document.webkitFullscreenElement || null;
+  const fsCan = () => { try { return !!((document.fullscreenEnabled || document.webkitFullscreenEnabled) && (fsRoot.requestFullscreen || fsRoot.webkitRequestFullscreen)); } catch (e) { return false; } };
+  function toggleFs() {
+    if (!fsCan()) return;
+    try {
+      if (fsEl()) (document.exitFullscreen || document.webkitExitFullscreen).call(document);
+      else { const r = (fsRoot.requestFullscreen || fsRoot.webkitRequestFullscreen).call(fsRoot); if (r && r.catch) r.catch(() => {}); }
+    } catch (e) { /* sin pantalla completa */ }
+  }
+  function syncFsBtn() {
+    const can = fsCan();
+    $('b-fs').hidden = !can; $('p-fs').hidden = !can;
+    $('b-fs').textContent = fsEl() ? 'Salir de pantalla completa' : 'Pantalla completa';
+    $('p-fs').textContent = fsEl() ? 'Salir de pantalla completa (F)' : 'Pantalla completa (F)';
+  }
+  ['fullscreenchange', 'webkitfullscreenchange'].forEach(ev => document.addEventListener(ev, syncFsBtn));
+  $('b-fs').addEventListener('click', toggleFs); $('p-fs').addEventListener('click', toggleFs); $('p-mute').addEventListener('click', toggleMute);
+  syncFsBtn(); syncMuteBtn();
+
   const KEYS = { ArrowLeft: 'left', KeyA: 'left', ArrowRight: 'right', KeyD: 'right', ArrowDown: 'down', KeyS: 'down', ArrowUp: 'cw', KeyW: 'cw', KeyX: 'cw', KeyZ: 'ccw', ControlLeft: 'ccw', Space: 'drop', KeyC: 'hold', ShiftLeft: 'hold', ShiftRight: 'hold' };
   window.addEventListener('keydown', e => {
     SND.init();
     if (e.metaKey || e.altKey) return;
-    if (e.code === 'KeyM') { SND.setMuted(!SND.isMuted()); announce(SND.isMuted() ? 'Sonido silenciado' : 'Sonido activado'); return; }
+    if (e.code === 'KeyM') { toggleMute(); return; }
+    if (e.code === 'KeyF' && !e.ctrlKey) { toggleFs(); e.preventDefault(); return; }
     if ($('settings').classList.contains('on') || $('how').classList.contains('on')) { if (e.code === 'Escape') { closeAux(); e.preventDefault(); } return; }
     if (appState === 'play' || appState === 'ready') {
       if (e.code === 'KeyP' || e.code === 'Escape') { if (!e.repeat) togglePause(); e.preventDefault(); return; }

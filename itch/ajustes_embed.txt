@@ -1,0 +1,6 @@
+Tipo de proyecto: HTML
+Archivo: subir panal-roto-html5.zip y marcar "This file will be played in the browser".
+Tamaño del visor: 800 x 700 (el tablero es vertical; el juego se adapta y funciona a otros tamaños).
+Botón de pantalla completa: activado.
+Compatible con móvil: sí. Marcar "Mobile friendly" en el panel de itch.io: sí.
+Almacenamiento: usa localStorage para ajustes y récords y funciona igual si el navegador lo bloquea.

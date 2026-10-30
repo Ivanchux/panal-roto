@@ -1,0 +1,1 @@
+Puzle de piezas hexagonales: cierra líneas en tres direcciones y encadena derrumbes.
