@@ -1,0 +1,10 @@
+puzzle
+arcade
+hexagons
+retro
+casual
+singleplayer
+touch
+gamepad
+html5
+2d

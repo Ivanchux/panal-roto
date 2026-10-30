@@ -117,7 +117,7 @@ Más de 6 líneas suman 600 cada una. Se multiplica por el cruce, por el eslabó
 
 | | Acción |
 |---|---|
-| Teclado | `←` `→` o `A` `D` mover · `↑` o `X` girar · `Z` o `Ctrl` girar al revés · `↓` o `S` bajar · `Espacio` caída directa · `C` o `Mayús` reserva · `P` o `Esc` pausa · `M` silenciar · `R` reiniciar |
+| Teclado | `←` `→` o `A` `D` mover · `↑` o `X` girar · `Z` o `Ctrl` girar al revés · `↓` o `S` bajar · `Espacio` caída directa · `C` o `Mayús` reserva · `P` o `Esc` pausa · `M` silenciar · `F` pantalla completa · `R` reiniciar |
 | Mando | Cruceta o palanca mover · A girar · B girar al revés · Y caída directa · X o gatillo izquierdo reserva · Start pausa |
 | Táctil | Arrastrar a los lados mover · tocar girar · deslizar abajo para caer · deslizar arriba para reserva · botones en pantalla |
 
@@ -182,6 +182,14 @@ python3 -m http.server 8000   # http://localhost:8000
 2. Ve a **Settings → Pages**.
 3. En *Build and deployment* elige **Deploy from a branch**, rama `main` y carpeta `/ (root)`.
 4. En un minuto estará en `https://ivanchux.github.io/panal-roto/`.
+
+### Paquete para itch.io
+
+```bash
+node tools/build-dist.mjs
+```
+
+Crea `dist/` y `panal-roto-html5.zip` (unos 40 KB). Los textos, la portada y la guía de subida están en [`itch/`](itch/). El script se detiene si encuentra direcciones externas.
 
 ### Regenerar `index.html`
 

@@ -1,5 +1,10 @@
 # Registro de cambios
 
+## Paquete para itch.io
+- Botón y tecla (`F`) de pantalla completa, con alternativa si el navegador no la admite, y botón de silencio en el menú de pausa.
+- `tools/build-dist.mjs` genera `dist/` y el `.zip`, y se detiene si hay direcciones externas.
+- Carpeta `itch/` con textos, etiquetas, portada, capturas y guía de subida.
+
 ## Presentación
 - Banner propio de cada juego, hecho con su arte (no una captura con panel).
 - README con banner, badges, índice, capturas, GIFs en PC y móvil, detalles técnicos y licencia.

@@ -1,0 +1,3 @@
+Teclado: ← → o A D mover · ↑ o X girar · Z o Ctrl girar al revés · ↓ o S bajar · Espacio caída directa · C o Mayús reserva · P o Esc pausa · M silencio · F pantalla completa · R reiniciar.
+Mando: cruceta o palanca mover · A girar · B girar al revés · Y caída directa · X o gatillo izquierdo reserva · Start pausa.
+Pantalla táctil: arrastrar a los lados para mover · tocar para girar · deslizar abajo para caer · deslizar arriba para reserva · botones en pantalla.
