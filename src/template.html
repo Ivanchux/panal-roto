@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<title>Panal Roto</title>
+<meta name="description" content="Panal Roto: puzle de caída sobre rejilla hexagonal. Líneas en tres direcciones y derrumbe en cadena. Por Ivanchux.">
+<meta name="theme-color" content="#120d1b">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-50 -50 100 100'%3E%3Cpath d='M0-42 36-21 0 0z' fill='%23ffb627'/%3E%3Cpath d='M36-21 36 21 0 0z' fill='%23ff6b4a'/%3E%3Cpath d='M36 21 0 42 0 0z' fill='%23e63e8d'/%3E%3Cpath d='M0 42-36 21 0 0z' fill='%238e6bff'/%3E%3Cpath d='M-36 21-36-21 0 0z' fill='%232ec4b6'/%3E%3C/svg%3E">
+<style>
+/*@@css@@*/
+</style>
+</head>
+<body>
+<div id="app">
+  <div id="stage">
+    <canvas id="cv" aria-label="Tablero de Panal Roto"></canvas>
+    <div id="live" class="sr" role="status" aria-live="polite"></div>
+
+    <!-- MENÚ -->
+    <section id="menu" class="overlay on" aria-labelledby="t-menu">
+      <div class="card">
+        <div class="logo">
+          <svg viewBox="-50 -50 100 100" aria-hidden="true">
+            <g stroke="#120d1b" stroke-width="2" stroke-linejoin="round">
+              <path d="M0-42 36-21 0 0z" fill="#ffb627"/>
+              <path d="M38-20 38 22 2 1z" fill="#ff6b4a"/>
+              <path d="M36 21 0 42 0 0z" fill="#e63e8d" transform="translate(0 3)"/>
+              <path d="M0 42-36 21 0 0z" fill="#8e6bff" transform="translate(-2 4) rotate(-5 0 0)"/>
+              <path d="M-36 21-36-21 0 0z" fill="#2ec4b6" transform="translate(-4 0)"/>
+              <path d="M-36-21 0-42 0 0z" fill="#ffd166" transform="translate(-2 -3) rotate(4 0 0)"/>
+            </g>
+          </svg>
+          <h1 id="t-menu">Panal Roto</h1>
+        </div>
+        <p class="tag">Piezas de cuatro hexágonos. Líneas en tres direcciones. Cada limpieza derrumba lo que queda, y lo que cae puede limpiar más.</p>
+        <div class="stack">
+          <button class="primary modebtn" data-mode="maraton"><span><b>Maratón</b><small>150 líneas, la velocidad sube cada 10</small></span><span class="best" id="best-maraton"></span></button>
+          <button class="modebtn" data-mode="contrarreloj"><span><b>Contrarreloj</b><small>Tres minutos, todos los puntos que puedas</small></span><span class="best" id="best-contrarreloj"></span></button>
+          <button class="modebtn" data-mode="diaria"><span><b>Partida diaria</b><small id="daily-sub">Mismas piezas para todos hoy · 80 líneas</small></span><span class="best" id="best-diaria"></span></button>
+          <div class="row"><button id="b-how" style="flex:1">Cómo se juega</button><button id="b-set" style="flex:1">Ajustes</button></div>
+        </div>
+        <p class="foot"><kbd>←</kbd><kbd>→</kbd> mover · <kbd>↑</kbd>/<kbd>X</kbd> girar · <kbd>Z</kbd> girar al revés · <kbd>↓</kbd> bajar · <kbd>Espacio</kbd> caída · <kbd>C</kbd> reserva · <kbd>P</kbd> pausa. También mando y pantalla táctil.<br>Prototipo de Ivanchux.</p>
+      </div>
+    </section>
+
+    <!-- CÓMO SE JUEGA -->
+    <section id="how" class="overlay" aria-labelledby="t-how">
+      <div class="card wide">
+        <h2 id="t-how">Cómo se juega</h2>
+        <p>El tablero es un panal de 9 columnas. Las piezas son las 10 formas distintas que se pueden hacer con cuatro hexágonos. Giran de 60 en 60 grados y, si chocan con una pared al girar, se desplazan lo justo para caber.</p>
+        <h3>Tres tipos de línea</h3>
+        <canvas id="how-lines" class="mini" width="720" height="250" aria-label="Los tres tipos de línea: franja, diagonal hacia arriba y diagonal hacia abajo"></canvas>
+        <p>Una línea es una cadena de 9 celdas de pared a pared. Vale la <b>franja</b> en zigzag, la diagonal <b>/</b> y la diagonal <b>\</b>. Una sola pieza puede cerrar varias a la vez; si son de direcciones distintas, el <b>cruce</b> multiplica los puntos.</p>
+        <h3>El derrumbe</h3>
+        <p>Al limpiar, las celdas se rompen. Lo que queda de cada pieza sigue unido y cae como un bloque hasta apoyarse en algo. Los huecos bajo un voladizo se conservan mientras haya algo que lo sostenga. Si al caer se completa otra línea, se limpia sola: eso es una <b>cadena</b>, y cada eslabón multiplica los puntos del anterior.</p>
+        <h3>Puntos</h3>
+        <p>Más líneas a la vez, más puntos. Cruce de direcciones: ×1,5 con dos, ×2 con tres. Cadena: ×1, ×2, ×3… Combo: limpiar en piezas consecutivas suma una bonificación creciente. Dejar el panal vacío da 3000 por nivel.</p>
+        <h3>Las 10 piezas</h3>
+        <canvas id="how-pieces" class="mini" width="720" height="150" aria-label="Las diez piezas"></canvas>
+        <h3>Controles</h3>
+        <p><kbd>←</kbd><kbd>→</kbd> o <kbd>A</kbd><kbd>D</kbd> mueven (en el panal el movimiento lateral sube y baja medio hexágono, es normal) · <kbd>↑</kbd> o <kbd>X</kbd> giran · <kbd>Z</kbd> gira al revés · <kbd>↓</kbd> o <kbd>S</kbd> baja · <kbd>Espacio</kbd> caída directa · <kbd>C</kbd> o <kbd>Mayús</kbd> reserva · <kbd>P</kbd> o <kbd>Esc</kbd> pausa · <kbd>M</kbd> silencia.</p>
+        <p>Mando: cruceta o palanca para mover, A girar, B girar al revés, Y caída directa, X o gatillo izquierdo reserva, Start pausa. Táctil: arrastra a los lados para mover, toca para girar, desliza hacia abajo para caer y hacia arriba para reservar; también hay botones.</p>
+        <div class="row" style="margin-top:12px"><button class="primary" data-close>Entendido</button></div>
+      </div>
+    </section>
+
+    <!-- AJUSTES -->
+    <section id="settings" class="overlay" aria-labelledby="t-set">
+      <div class="card wide">
+        <h2 id="t-set">Ajustes</h2>
+        <h3>Controles</h3>
+        <div class="set"><label for="s-das">Retardo de repetición (DAS)</label><div class="ctl"><input id="s-das" type="range" min="60" max="300" step="5"><span class="val" id="v-das"></span></div><div class="hint">Tiempo que mantienes pulsado antes de que la pieza empiece a repetir el movimiento.</div></div>
+        <div class="set"><label for="s-arr">Velocidad de repetición (ARR)</label><div class="ctl"><input id="s-arr" type="range" min="0" max="120" step="5"><span class="val" id="v-arr"></span></div><div class="hint">Intervalo entre movimientos repetidos. 0 lleva la pieza hasta la pared de golpe.</div></div>
+        <div class="set"><label for="s-soft">Caída suave</label><div class="ctl"><input id="s-soft" type="range" min="5" max="40" step="1"><span class="val" id="v-soft"></span></div><div class="hint">Cuántas veces más rápido cae la pieza al mantener la tecla de bajar.</div></div>
+        <div class="set"><label for="s-touch">Controles táctiles</label><div class="ctl"><select id="s-touch"><option value="auto">Automático</option><option value="on">Siempre</option><option value="off">Nunca</option></select></div></div>
+        <div class="set"><label for="s-ghost">Pieza fantasma</label><div class="ctl"><input id="s-ghost" type="checkbox"></div></div>
+        <div class="set"><label for="s-level">Nivel inicial (Maratón y Contrarreloj)</label><div class="ctl"><select id="s-level"></select></div></div>
+        <h3>Sonido</h3>
+        <div class="set"><label for="s-mus">Música</label><div class="ctl"><input id="s-mus" type="range" min="0" max="100" step="1"><span class="val" id="v-mus"></span></div></div>
+        <div class="set"><label for="s-sfx">Efectos</label><div class="ctl"><input id="s-sfx" type="range" min="0" max="100" step="1"><span class="val" id="v-sfx"></span></div></div>
+        <h3>Accesibilidad</h3>
+        <div class="set"><label for="s-cb">Modo para daltónicos</label><div class="ctl"><input id="s-cb" type="checkbox"></div><div class="hint">Paleta apta para daltonismo y un dibujo grabado distinto en cada pieza, para que no dependas del color.</div></div>
+        <div class="set"><label for="s-rm">Reducir movimiento</label><div class="ctl"><input id="s-rm" type="checkbox"></div><div class="hint">Sin temblor de pantalla, sin fragmentos volando, sin destellos ni fondo animado. El ritmo de juego no cambia.</div></div>
+        <div class="row" style="margin-top:14px"><button class="primary" data-close>Cerrar</button><button id="b-reset">Restablecer ajustes</button></div>
+      </div>
+    </section>
+
+    <!-- PAUSA -->
+    <section id="pause" class="overlay" aria-labelledby="t-pause">
+      <div class="card">
+        <h2 id="t-pause">Pausa</h2>
+        <div class="stack">
+          <button class="primary" id="p-resume">Continuar</button>
+          <button id="p-restart">Reiniciar partida</button>
+          <button id="p-set">Ajustes</button>
+          <button id="p-menu">Salir al menú</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- FIN -->
+    <section id="over" class="overlay" aria-labelledby="t-over">
+      <div class="card">
+        <h2 id="t-over">Fin</h2>
+        <p id="over-sub" class="tag" style="margin:0"></p>
+        <table class="stats" id="over-stats"></table>
+        <div class="stack">
+          <button class="primary" id="o-again">Jugar otra vez</button>
+          <button id="o-share" hidden>Copiar resultado</button>
+          <button id="o-menu">Menú</button>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div id="touch" aria-label="Controles táctiles">
+    <button data-act="left" aria-label="Mover a la izquierda">◀</button>
+    <button data-act="down" aria-label="Bajar">▼</button>
+    <button data-act="right" aria-label="Mover a la derecha">▶</button>
+    <button data-act="ccw" class="act" aria-label="Girar al revés">⟲</button>
+    <button data-act="cw" class="act" aria-label="Girar">⟳</button>
+    <button data-act="hold" class="act" aria-label="Reserva"><div style="font-size:16px">⇆</div><span>RESERVA</span></button>
+    <button data-act="drop" class="act" aria-label="Caída directa">⤓</button>
+  </div>
+</div>
+
+<script id="engine">
+/*@@engine@@*/
+</script>
+<script id="juego">
+/*@@render@@*/
+/*@@audio@@*/
+/*@@app@@*/
+</script>
+</body>
+</html>
